@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/home/sukesan1984/.vim/bundle/quickrun'
+let g:netrw_dirhist_2='/home/sukesan1984/.vim/bundle/quickrun/doc'
+let g:netrw_dirhist_3='/home/sukesan1984/work/perl'
+let g:netrw_dirhist_4='/home/sukesan1984/work'
+let g:netrw_dirhist_5='/home/sukesan1984/work/perl/Zentoo/t'
+let g:netrw_dirhist_6='/home/sukesan1984/work/perl/catalyst/Catal'
+let g:netrw_dirhist_7='/home/sukesan1984/.vim'
+let g:netrw_dirhist_8='/home/sukesan1984/.vim/snippets'
