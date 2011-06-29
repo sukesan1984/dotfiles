@@ -153,6 +153,13 @@ if has("syntax")
     augroup END
 endif
 
+"ファイルタイプの設定
+au BufRead,BufNewFile *.tt set filetype=html
+
+"行末のスペースを目立たせる。
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+autocmd WinEnter * match WhitespaceEOL /\s\+$/
 
 "-----------------------------------------------------------------------------
 " マップ定義
@@ -184,7 +191,6 @@ noremap <C-k> kkkkk
 noremap <C-h> hhhhh
 noremap <C-l> lllll
 
-noremap <Space>r :! python ~/Documents/DnLib/misc/reload.py<Return>
 noremap <Space>q :%QuickRun<Return>
 
 "plugin
@@ -313,4 +319,16 @@ if !exists('g:neocomplcache_omni_patterns')
 endif
 let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+function! Scouter(file, ...)
+  let pat = '^\s*$\|^\s*"'
+  let lines = readfile(a:file)
+  if !a:0 || !a:1
+    let lines = split(substitute(join(lines, "\n"), '\n\s*\\', '', 'g'), "\n")
+  endif
+  return len(filter(lines,'v:val !~ pat'))
+endfunction
+command! -bar -bang -nargs=? -complete=file Scouter
+\        echo Scouter(empty(<q-args>) ? $MYVIMRC : expand(<q-args>), <bang>0)
+command! -bar -bang -nargs=? -complete=file GScouter
+\        echo Scouter(empty(<q-args>) ? $MYGVIMRC : expand(<q-args>), <bang>0)
 
