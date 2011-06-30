@@ -1,4 +1,14 @@
-call pathogen#runtime_append_all_bundles()
+set rtp+=~/.vim/vundle/
+call vundle#rc()
+
+Bundle 'Shougo/unite.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'Shougo/neocomplcache'
+Bundle 'snipMate'
+Bundle 'ZenCoding.vim'
+Bundle 'quickrun.vim'
+Bundle 'surround.vim'
+
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
 " 文字コード関連
