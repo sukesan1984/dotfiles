@@ -8,6 +8,7 @@ Bundle 'snipMate'
 Bundle 'ZenCoding.vim'
 Bundle 'quickrun.vim'
 Bundle 'surround.vim'
+Bundle 'jslint.vim'
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
@@ -80,6 +81,7 @@ set mouse=a
 set showcmd
 set cmdheight=2
 set wildmenu
+set textwidth=78
 
 
 "バイナリ編集(xxd)モード（vim -b での起動、もしくは *.bin で発動します）
@@ -103,6 +105,7 @@ set foldmethod=syntax
 "let perl_fold=1
 "let perl_fold_blocks=1
 
+let $JS_CMD = 'node'
 
 "-----------------------------------------------------------------------------
 " 検索関連
@@ -129,6 +132,7 @@ endif
 :set list
 "タブ幅を設定する
 :set tabstop=4
+:set expandtab
 :set shiftwidth=4
 "入力中のコマンドをステータスに表示する
 :set showcmd
