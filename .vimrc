@@ -9,6 +9,11 @@ Bundle 'ZenCoding.vim'
 Bundle 'quickrun.vim'
 Bundle 'surround.vim'
 Bundle 'jslint.vim'
+Bundle 'ref.vim'
+Bundle 'git://github.com/vim-scripts/errormarker.vim.git'
+Bundle 'git://github.com/mattn/gist-vim.git'
+Bundle 'git://github.com/mattn/webapi-vim.git'
+Bundle 'git://github.com/tpope/vim-fugitive.git'
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
@@ -346,3 +351,5 @@ command! -bar -bang -nargs=? -complete=file Scouter
 command! -bar -bang -nargs=? -complete=file GScouter
 \        echo Scouter(empty(<q-args>) ? $MYGVIMRC : expand(<q-args>), <bang>0)
 
+let g:github_user = 'sukesan1984'
+let g:gist_put_url_to_clipboard_after_post = 1
