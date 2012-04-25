@@ -14,6 +14,7 @@ Bundle 'git://github.com/vim-scripts/errormarker.vim.git'
 Bundle 'git://github.com/mattn/gist-vim.git'
 Bundle 'git://github.com/mattn/webapi-vim.git'
 Bundle 'git://github.com/tpope/vim-fugitive.git'
+Bundle 'git://github.com/migrs/qfixhowm.git'
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
