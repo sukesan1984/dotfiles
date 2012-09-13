@@ -8,13 +8,19 @@ Bundle 'snipMate'
 Bundle 'ZenCoding.vim'
 Bundle 'quickrun.vim'
 Bundle 'surround.vim'
-Bundle 'jslint.vim'
+"Bundle 'jslint.vim'
 Bundle 'ref.vim'
 Bundle 'git://github.com/vim-scripts/errormarker.vim.git'
 Bundle 'git://github.com/mattn/gist-vim.git'
 Bundle 'git://github.com/mattn/webapi-vim.git'
 Bundle 'git://github.com/tpope/vim-fugitive.git'
 Bundle 'git://github.com/migrs/qfixhowm.git'
+Bundle 'git://github.com/vim-scripts/yaml.vim.git'
+Bundle 'git://github.com/tpope/vim-markdown.git'
+Bundle 'git://github.com/mattn/mkdpreview-vim.git'
+Bundle 'git://github.com/nanotech/jellybeans.vim.git'
+Bundle 'buftabs'
+Bundle 'vim-coffee-script'
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
@@ -87,7 +93,6 @@ set mouse=a
 set showcmd
 set cmdheight=2
 set wildmenu
-set textwidth=78
 
 
 "バイナリ編集(xxd)モード（vim -b での起動、もしくは *.bin で発動します）
@@ -104,12 +109,13 @@ augroup END
 :set ruler 
 "折り畳み設定
 syntax on
-let javaScript_fold = 1 
-let javaScript_fold_blocks=1
+"let javaScript_fold = 1 
+"let javaScript_fold_blocks=1
 set foldlevel=0
 set foldmethod=syntax
 "let perl_fold=1
 "let perl_fold_blocks=1
+vmap t !perltidy<CR>
 
 let $JS_CMD = 'node'
 
@@ -354,3 +360,20 @@ command! -bar -bang -nargs=? -complete=file GScouter
 
 let g:github_user = 'sukesan1984'
 let g:gist_put_url_to_clipboard_after_post = 1
+
+"qfixhowm config
+let QFixHowm_HowmMode = 0
+let QFixHowm_Title    = '#'
+let suffix            = 'mkd'
+"let QFixHowm_UserFileType = 'howm_memo.markdown'
+let QFixHowm_UserFileExt  = suffix
+"let QFixHowm_Folding = 0
+let QFixHowm_FoldingPattern = '^\d[=.*[]#'
+
+let howm_filename         = '%Y/%m/%Y-%m-%d-%H%M%S.'.suffix
+let QFixHowm_FileType='howm_memo.markdown'
+
+"yaml setting
+au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/bundle/yaml.vim/colors/yaml.vim
+
+
