@@ -8,19 +8,23 @@ Bundle 'snipMate'
 Bundle 'ZenCoding.vim'
 Bundle 'quickrun.vim'
 Bundle 'surround.vim'
-"Bundle 'jslint.vim'
+Bundle 'jslint.vim'
 Bundle 'ref.vim'
-Bundle 'git://github.com/vim-scripts/errormarker.vim.git'
+"Bundle 'git://github.com/vim-scripts/errormarker.vim.git'
 Bundle 'git://github.com/mattn/gist-vim.git'
 Bundle 'git://github.com/mattn/webapi-vim.git'
-Bundle 'git://github.com/tpope/vim-fugitive.git'
-Bundle 'git://github.com/migrs/qfixhowm.git'
 Bundle 'git://github.com/vim-scripts/yaml.vim.git'
 Bundle 'git://github.com/tpope/vim-markdown.git'
 Bundle 'git://github.com/mattn/mkdpreview-vim.git'
 Bundle 'git://github.com/nanotech/jellybeans.vim.git'
 Bundle 'buftabs'
 Bundle 'vim-coffee-script'
+Bundle 'https://github.com/pekepeke/titanium-vim.git'
+Bundle 'fugitive.vim'
+Bundle 'migrs/qfixhowm'
+Bundle 'git@github.com:itchyny/calendar.vim.git'
+Bundle 'itchyny/lightline.vim'
+Bundle 'scrooloose/syntastic.git'
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
@@ -81,6 +85,7 @@ endif
 if exists('&ambiwidth')
 	:set ambiwidth=double
 endif
+:set fileencodings=iso-2022-jp,utf-8,cp932,euc-jp,default,latin
 
 "-----------------------------------------------------------------------------
 " 編集関連
@@ -212,10 +217,6 @@ inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 inoremap < <><LEFT>
 noremap <Space>c \c<Space>
-noremap <C-j> jjjjj
-noremap <C-k> kkkkk
-noremap <C-h> hhhhh
-noremap <C-l> lllll
 
 noremap <Space>q :%QuickRun<Return>
 
@@ -376,4 +377,83 @@ let QFixHowm_FileType='howm_memo.markdown'
 "yaml setting
 au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/bundle/yaml.vim/colors/yaml.vim
 
+"matchit.vim"
+source $VIMRUNTIME/macros/matchit.vim
+let b:match_words = '\(\<IF\>\|\<UNLESS\>\|\<FOR\>\|\<FOREACH\>\):END,<:>,[:],(:),{:},<div.*>:</div>'
 
+"calendar.vim"
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+nnoremap <silent> <Space>cd :Calendar -view=day -split=vertical -width=30<CR>
+
+"lightline.vim"
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'right': [ [ 'syntastic', 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag'
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error'
+      \ }
+      \ }
+let g:syntastic_mode_map = {'mode': 'passive'}
+augroup AutoSyntastic
+    autocmd!
+    autocmd BufWritePost *.c,*.cpp,*.pl,*.rb,*.js call s:syntastic()
+augroup END
+function! s:syntastic()
+    SyntasticCheck
+    call lightline#update()
+endfunction
+
+"tabの設定"
+
+" Anywhere SID.
+function! s:SID_PREFIX()
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
+" Set tabline.
+function! s:my_tabline()  "{{{
+  let s = ''
+  for i in range(1, tabpagenr('$'))
+    let bufnrs = tabpagebuflist(i)
+    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+    let no = i  " display 0-origin tabpagenr.
+    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+    let title = fnamemodify(bufname(bufnr), ':t')
+    let title = '[' . title . ']'
+    let s .= '%'.i.'T'
+    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+    let s .= no . ':' . title
+    let s .= mod
+    let s .= '%#TabLineFill# '
+  endfor
+  let s .= '%#TabLineFill#%T%=%#TabLine#'
+  return s
+endfunction "}}}
+let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
+set showtabline=2 " 常にタブラインを表示
+
+" The prefix key.
+nnoremap    [Tag]   <Nop>
+nmap    t [Tag]
+" Tab jump
+for n in range(1, 9)
+  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+endfor
+" t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
+
+map <silent> [Tag]c :tablast <bar> tabnew<CR>
+" tc 新しいタブを一番右に作る
+map <silent> [Tag]x :tabclose<CR>
+" tx タブを閉じる
+map <silent> [Tag]n :tabnext<CR>
+" tn 次のタブ
+map <silent> [Tag]p :tabprevious<CR>
+" tp 前のタブ
