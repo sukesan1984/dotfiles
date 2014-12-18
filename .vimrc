@@ -20,11 +20,17 @@ Bundle 'git://github.com/nanotech/jellybeans.vim.git'
 Bundle 'buftabs'
 Bundle 'vim-coffee-script'
 Bundle 'https://github.com/pekepeke/titanium-vim.git'
-Bundle 'fugitive.vim'
+"Bundle 'fugitive.vim'
 Bundle 'migrs/qfixhowm'
 Bundle 'git@github.com:itchyny/calendar.vim.git'
 Bundle 'itchyny/lightline.vim'
 Bundle 'scrooloose/syntastic.git'
+Bundle 'nosami/Omnisharp.git'
+Bundle 'tpope/vim-dispatch.git'
+Bundle 'vim-scripts/AutoComplPop.git'
+Bundle 'dtjm/plantuml-syntax.vim.git'
+Bundle 'tpope/vim-fugitive'
+
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
@@ -210,12 +216,12 @@ map <kPlus> <C-W>+
 map <kMinus> <C-W>-
 
 "括弧を自動で
-inoremap { {}<LEFT>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
-inoremap < <><LEFT>
+"inoremap { {}<LEFT>
+"inoremap [ []<LEFT>
+"inoremap ( ()<LEFT>
+"inoremap " ""<LEFT>
+"inoremap ' ''<LEFT>
+"inoremap < <><LEFT>
 noremap <Space>c \c<Space>
 
 noremap <Space>q :%QuickRun<Return>
@@ -259,25 +265,25 @@ nnoremap <silent> <Space>ua :UniteBookmarkAdd<CR>
 nnoremap <silent> <Space>ub :Unite bookmark<CR>
 nnoremap <silent> <Space>ui :Unite file_include<CR>
 
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()"{{{
-  nnoremap <silent><buffer> <C-o> :call unite#mappings#do_action('tabopen')<CR>
-  inoremap <silent><buffer> <C-o> <Esc>:call unite#mappings#do_action('tabopen')<CR>
+"autocmd FileType unite call s:unite_my_settings()
+"function! s:unite_my_settings()"{{{
+  "nnoremap <silent><buffer> <C-o> :call unite#mappings#do_action('tabopen')<CR>
+  "inoremap <silent><buffer> <C-o> <Esc>:call unite#mappings#do_action('tabopen')<CR>
 
-  call unite#set_substitute_pattern('file', '[^~.]\zs/', '*/*', 20)
-  call unite#set_substitute_pattern('file', '/\ze[^*]', '/*', 10)
+  "call unite#set_substitute_pattern('file', '[^~.]\zs/', '*/*', 20)
+  "call unite#set_substitute_pattern('file', '/\ze[^*]', '/*', 10)
 
-  call unite#set_substitute_pattern('file', '^@@', '\=fnamemodify(expand("#"), ":p:h")."/*"', 2)
-  call unite#set_substitute_pattern('file', '^@', '\=getcwd()."/*"', 1)
-  call unite#set_substitute_pattern('file', '^\\', '~/*')
+  "call unite#set_substitute_pattern('file', '^@@', '\=fnamemodify(expand("#"), ":p:h")."/*"', 2)
+  "call unite#set_substitute_pattern('file', '^@', '\=getcwd()."/*"', 1)
+  "call unite#set_substitute_pattern('file', '^\\', '~/*')
 
-  call unite#set_substitute_pattern('file', '\*\*\+', '*', -1)
+  "call unite#set_substitute_pattern('file', '\*\*\+', '*', -1)
 
-  call unite#set_substitute_pattern('file', '\\\@<! ', '\\ ', -20)
-  call unite#set_substitute_pattern('file', '\\ \@!', '/', -30)
-  let g:unite_enable_ignore_case = 1
-  let g:unite_enable_smart_case = 1
-endfunction"}}}
+  "call unite#set_substitute_pattern('file', '\\\@<! ', '\\ ', -20)
+  "call unite#set_substitute_pattern('file', '\\ \@!', '/', -30)
+  "let g:unite_enable_ignore_case = 1
+  "let g:unite_enable_smart_case = 1
+"endfunction"}}}
 
 
 
@@ -332,6 +338,12 @@ let g:neocomplcache_enable_auto_select = 1
 inoremap <expr><C-h> pumvisible() ? neocomplcache#cancel_popup()."\<C-h>" : "\<C-h>"
 inoremap <expr><BS> pumvisible() ? neocomplcache#cancel_popup()."\<C-h>" : "\<C-h>"
 
+if !exists('g:neocomplcache_force_omni_patterns')
+  let g:neocomplcache_force_omni_patterns = {}
+endif
+let g:neocomplcache_force_omni_patterns.cs = '[^.]\.\%(\u\{2,}\)\?'
+
+
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -339,6 +351,7 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType json set filetype = json
+autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
 " Enable heavy omni completion.
 if !exists('g:neocomplcache_omni_patterns')
@@ -457,3 +470,32 @@ map <silent> [Tag]n :tabnext<CR>
 " tn 次のタブ
 map <silent> [Tag]p :tabprevious<CR>
 " tp 前のタブ
+"
+
+" OmniSharp
+setlocal omnifunc=syntaxcomplete#Complete
+nnoremap <silent> <buffer> ma :OmniSharpAddToProject<CR>
+nnoremap <silent> <buffer> mb :OmniSharpBuild<CR>
+nnoremap <silent> <buffer> mc :OmniSharpFindSyntaxErrors<CR>
+nnoremap <silent> <buffer> mf :OmniSharpCodeFormat<CR>
+nnoremap <silent> <buffer> mj :OmniSharpGotoDefinition<CR>
+nnoremap <silent> <buffer> <C-w>mj <C-w>s:OmniSharpGotoDefinition<CR>
+nnoremap <silent> <buffer> mi :OmniSharpFindImplementations<CR>
+nnoremap <silent> <buffer> mr :OmniSharpRename<CR>
+nnoremap <silent> <buffer> mt :OmniSharpTypeLookup<CR>
+nnoremap <silent> <buffer> mu :OmniSharpFindUsages<CR>
+nnoremap <silent> <buffer> mx :OmniSharpGetCodeActions<CR>
+
+"補完の色
+hi Pmenu ctermbg=0
+hi PmenuSel ctermbg=4
+hi PmenuSbar ctermbg=2
+hi PmenuThumb ctermfg=3
+
+"カラースキーマを設定
+colorscheme molokai
+syntax on
+let g:molokai_original = 1
+let g:rehash256 = 1
+set background=dark
+
