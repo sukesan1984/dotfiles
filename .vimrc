@@ -155,8 +155,10 @@ endif
 :set list
 "タブ幅を設定する
 :set tabstop=4
+autocmd FileType ruby setl ts=2
 :set expandtab
 :set shiftwidth=4
+autocmd FileType ruby setl shiftwidth=2
 "入力中のコマンドをステータスに表示する
 :set showcmd
 "括弧入力時の対応する括弧を表示
