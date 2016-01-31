@@ -1,4 +1,4 @@
-set rtp+=~/.vim/vundle/
+set rtp+=~/.vim/vundle.git/
 call vundle#rc()
 
 Bundle 'Shougo/unite.vim'
@@ -30,6 +30,7 @@ Bundle 'tpope/vim-dispatch.git'
 Bundle 'vim-scripts/AutoComplPop.git'
 Bundle 'dtjm/plantuml-syntax.vim.git'
 Bundle 'tpope/vim-fugitive'
+Bundle 'git@github.com:tomasr/molokai.git'
 
 
 " vim: :set ts=4 sw=4 sts=0:
