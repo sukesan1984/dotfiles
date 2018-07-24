@@ -8,7 +8,7 @@ Bundle 'snipMate'
 Bundle 'ZenCoding.vim'
 Bundle 'quickrun.vim'
 Bundle 'surround.vim'
-Bundle 'jslint.vim'
+"Bundle 'jslint.vim'
 Bundle 'ref.vim'
 "Bundle 'git://github.com/vim-scripts/errormarker.vim.git'
 Bundle 'git://github.com/mattn/gist-vim.git'
@@ -31,6 +31,7 @@ Bundle 'vim-scripts/AutoComplPop.git'
 Bundle 'dtjm/plantuml-syntax.vim.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'git@github.com:tomasr/molokai.git'
+Bundle 'git@github.com:slim-template/vim-slim.git'
 
 
 " vim: :set ts=4 sw=4 sts=0:
@@ -99,9 +100,9 @@ endif
 "
 "オートインデントする
 :set autoindent
-"バックスペースでインデントや改行を削除できるようにする。　
+" ックスペースでインデントや改行を削除できるようにする。　
 set backspace=2
-set mouse=a
+set mouse-=a
 set showcmd
 set cmdheight=2
 set wildmenu
@@ -350,7 +351,7 @@ let g:neocomplcache_force_omni_patterns.cs = '[^.]\.\%(\u\{2,}\)\?'
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType json set filetype = json
@@ -501,4 +502,11 @@ syntax on
 let g:molokai_original = 1
 let g:rehash256 = 1
 set background=dark
+
+"行末のスペースをHighlightする
+augroup HighlightTrailingSpaces
+  autocmd!
+  autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
+  autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
+augroup END
 
