@@ -1,6 +1,7 @@
 set rtp+=~/.vim/vundle.git/
 call vundle#rc()
 
+Bundle 'Shougo/neomru.vim'
 Bundle 'Shougo/unite.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Shougo/neocomplcache'
@@ -38,6 +39,7 @@ Bundle 'git@github.com:slim-template/vim-slim.git'
 "-----------------------------------------------------------------------------
 " 文字コード関連
 "
+let mapleader = ","
 if &encoding !=# 'utf-8'
 	:set encoding=japan
 	:set fileencoding=japan
@@ -175,10 +177,10 @@ autocmd FileType ruby setl shiftwidth=2
 "行頭のスペースの連続をハイライトさせる
 "Tab文字も区別されずにハイライトされるので、区別したいときはTab文字の表示を別に
 "設定する必要がある。
-function! SOLSpaceHilight()
-    syntax match SOLSpace "^\s\+" display containedin=ALL
-    highlight SOLSpace term=underline ctermbg=LightGray
-endf
+"function! SOLSpaceHilight()
+"    syntax match SOLSpace "^\s\+" display containedin=ALL
+"    highlight SOLSpace term=underline ctermbg=LightGray
+"endf
 "全角スペースをハイライトさせる。
 function! JISX0208SpaceHilight()
     syntax match JISX0208Space "　" display containedin=ALL
@@ -189,7 +191,7 @@ if has("syntax")
     syntax on
         augroup invisible
         autocmd! invisible
-        autocmd BufNew,BufRead * call SOLSpaceHilight()
+        "autocmd BufNew,BufRead * call SOLSpaceHilight()
         autocmd BufNew,BufRead * call JISX0208SpaceHilight()
     augroup END
 endif
@@ -354,7 +356,7 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType json set filetype = json
+"autocmd FileType json set filetype = json
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
 " Enable heavy omni completion.
@@ -509,4 +511,36 @@ augroup HighlightTrailingSpaces
   autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
   autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
+
+"Go
+call plug#begin()
+  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+  Plug 'AndrewRadev/splitjoin.vim'
+  Plug 'ctrlpvim/ctrlp.vim'
+call plug#end()
+set autowrite
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+function! s:build_go_files()
+    let l:file = expand('%')
+    if l:file =~# '^\f\+_test\.go$'
+        call go#test#Test(0, 1)
+    elseif l:file=~# '^\f\+\.go$'
+        call go#cmd#Build(0)
+    endif
+endfunction
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <leader>i <Plug>(go-info)
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+"Buffer
+nnoremap <silent> <C-j> :bprev<CR>
+nnoremap <silent> <C-k> :bnext<CR>
 
