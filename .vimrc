@@ -33,6 +33,8 @@ Bundle 'dtjm/plantuml-syntax.vim.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'git@github.com:tomasr/molokai.git'
 Bundle 'git@github.com:slim-template/vim-slim.git'
+Bundle 'git@github.com:42Paris/42header.git'
+Bundle 'git@github.com:justmao945/vim-clang.git'
 
 
 " vim: :set ts=4 sw=4 sts=0:
@@ -108,6 +110,15 @@ set mouse-=a
 set showcmd
 set cmdheight=2
 set wildmenu
+set tabstop=4
+set shiftwidth=4
+set expandtab
+augroup fileTypeIndent
+    autocmd!
+    autocmd FileType ruby setl ts=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.c setlocal noexpandtab
+    autocmd BufNewFile,BufRead *.h setlocal noexpandtab
+augroup END
 
 
 "バイナリ編集(xxd)モード（vim -b での起動、もしくは *.bin で発動します）
@@ -157,12 +168,6 @@ endif
 "タブの左側にカーソル表示
 :set listchars=tab:._ 
 :set list
-"タブ幅を設定する
-:set tabstop=4
-autocmd FileType ruby setl ts=2
-:set expandtab
-:set shiftwidth=4
-autocmd FileType ruby setl shiftwidth=2
 "入力中のコマンドをステータスに表示する
 :set showcmd
 "括弧入力時の対応する括弧を表示
@@ -257,6 +262,12 @@ filetype indent on
 	"\(getpos('.')[2]==1 \|\|
 	"\getline('.')[: getpos('.')[2]-2] =~"^[\<TAB>]*$")?"zch":"h"
 source ~/.vimrc.local
+let s:dir = getcwd()
+let s:ans = findfile(".private.vim", fnameescape(s:dir) . ";")
+if len(s:ans) > 1
+    let s:rc = fnamemodify(s:ans, ":p:h") . "/.vimrc"
+    call feedkeys(":source".s:rc."\<cr>")
+endif
 
 "---------------------------------------------------------------------
 " for termunite.vim
@@ -395,6 +406,7 @@ let QFixHowm_FileType='howm_memo.markdown'
 
 "yaml setting
 au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/bundle/yaml.vim/colors/yaml.vim
+au FileType yaml set expandtab ts=2 sw=2 enc=utf-8 fenc=utf-8
 
 "matchit.vim"
 source $VIMRUNTIME/macros/matchit.vim
@@ -543,4 +555,12 @@ autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 "Buffer
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
+
+"grep
+set grepprg=git\ grep\ -I\ --line-number
+augroup QuickFixCmd
+  autocmd!
+  autocmd QuickFixCmdPost *grep* cwindow
+augroup END
+nnoremap gr :grep <cword><CR>
 
