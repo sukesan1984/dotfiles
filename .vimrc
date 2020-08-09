@@ -538,6 +538,11 @@ map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 autocmd FileType go nmap <leader>r <Plug>(go-run)
 autocmd FileType go nmap <leader>t <Plug>(go-test)
+let g:go_fmt_command = "goimports"
+"au BufWritePre,FileWritePre *.go Fmt
+"autocmd FileWritePre *.go :GoFmt
+"autocmd BufWritePre *.go :GoFmt
+"let g:go_metalinter_autosave = 1
 function! s:build_go_files()
     let l:file = expand('%')
     if l:file =~# '^\f\+_test\.go$'
@@ -549,22 +554,27 @@ endfunction
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <leader>c <Plug>(go-coverage-toggle)
 autocmd FileType go nmap <leader>i <Plug>(go-info)
+autocmd FileType go nmap <leader>f :GoFmt<CR>
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
+
 "Buffer
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
 
-"grep
-set grepprg=git\ grep\ -I\ --line-number
+"Grep
 augroup QuickFixCmd
-  autocmd!
-  autocmd QuickFixCmdPost *grep* cwindow
-augroup END
+    autocmd!
+    autocmd QuickFixCmdPost *grep* cwindow
+augroup end
+set grepprg=git\ grep\ -I\ --line-number
 nnoremap gr :grep <cword><CR>
+" In the quickfix window, <CR> is used to jum to ther error under the
+" cursor, so undefine the mapping there.
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
