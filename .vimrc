@@ -37,7 +37,8 @@ Plugin 'git@github.com:tpope/vim-rhubarb.git'
 Plugin 'git@github.com:preservim/nerdtree.git'
 Plugin 'git@github.com:42Paris/42header.git'
 Plugin 'git@github.com:justmao945/vim-clang.git'
-
+Plugin 'davidhalter/jedi-vim'
+Plugin 'neomake/neomake'
 
 " vim: :set ts=4 sw=4 sts=0:
 "-----------------------------------------------------------------------------
@@ -580,3 +581,7 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
+" neomake
+let g:neomake_python_enabled_makers = ['python', 'flake8', 'mypy']
+autocmd! BufEnter,BufWritePost * Neomake
