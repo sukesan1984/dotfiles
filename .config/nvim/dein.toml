@@ -6,3 +6,74 @@ repo = 'joshdick/onedark.vim'
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+build = 'bash install.sh'
+hook_add = '''
+    set hidden
+    let g:LanguageClient_autoStart = 1
+    let g:LanguageClient_serverCommands = {
+        \ 'c': ['clangd'],
+        \ 'cpp': ['clangd'],
+	\ 'go': ['gopls'],
+	\ 'python': ['pyls'],
+\ }
+    let g:LanguageClient_loadSettings = 1
+    let g:LanguageClient_hasSnippetSupport = 0
+    set completefunc=LanguageClient#complete
+    nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+    " Or map each action separately
+    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+'''
+
+[[plugins]]
+repo = 'fatih/vim-go'
+hook_add = '''
+  " 保存時に必要なimportを自動的に挿入
+  let g:go_fmt_command = "goimports"
+  " LSPに任せる機能をOFFにする
+  let g:go_def_mapping_enabled = 0
+  let g:go_doc_keywordprg_enabled = 0
+'''
+
+# status line
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+    let g:lightline = {'colorscheme': 'onedark'}
+'''
+
+# 不要な空白行を削除
+[[plugins]]
+repo = 'ntpeters/vim-better-whitespace'
+
+[[plugins]]
+repo = 'Yggdroot/indentLine'
+
+[[plugins]]
+repo = 'preservim/nerdtree'
+hook_add = '''
+    nmap <C-e> :NERDTreeToggle<CR>
+'''
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+hook_add = '''
+    nmap <F8> :TagbarToggle<CR>
+'''
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --bin'
+merged = '0'
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+hook_add = '''
+    nmap <C-p> :History<CR>
+'''
