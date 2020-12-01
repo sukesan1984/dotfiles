@@ -77,3 +77,10 @@ depends = 'fzf'
 hook_add = '''
     nmap <C-p> :History<CR>
 '''
+[[plugins]]
+repo = '42Paris/42header'
+rtp = 'vim'
+hook_add = '''
+    run stdheader.vim
+'''
+
