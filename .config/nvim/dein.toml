@@ -1,11 +1,14 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-[[plugins]]
-repo = 'joshdick/onedark.vim'
+#[[plugins]]
+#repo = 'joshdick/onedark.vim'
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = "tpope/vim-rhubarb"
 
 [[plugins]]
 repo = 'autozimu/LanguageClient-neovim'
@@ -19,6 +22,8 @@ hook_add = '''
         \ 'cpp': ['clangd'],
 	\ 'go': ['gopls'],
 	\ 'python': ['pyls'],
+	\ 'ruby': ['solargraph', 'stdio'],
+	\ 'typescript': ['typescript-language-server'],
 \ }
     let g:LanguageClient_loadSettings = 1
     let g:LanguageClient_hasSnippetSupport = 0
@@ -43,9 +48,9 @@ hook_add = '''
 # status line
 [[plugins]]
 repo = 'itchyny/lightline.vim'
-hook_add = '''
-    let g:lightline = {'colorscheme': 'onedark'}
-'''
+#hook_add = '''
+#    let g:lightline = {'colorscheme': 'onedark'}
+#'''
 
 # 不要な空白行を削除
 [[plugins]]
@@ -54,11 +59,11 @@ repo = 'ntpeters/vim-better-whitespace'
 [[plugins]]
 repo = 'Yggdroot/indentLine'
 
-[[plugins]]
-repo = 'preservim/nerdtree'
-hook_add = '''
-    nmap <C-e> :NERDTreeToggle<CR>
-'''
+#[[plugins]]
+#repo = 'preservim/nerdtree'
+#hook_add = '''
+#    nmap <C-e> :NERDTreeToggle<CR>
+#'''
 
 [[plugins]]
 repo = 'majutsushi/tagbar'
@@ -76,6 +81,10 @@ repo = 'junegunn/fzf.vim'
 depends = 'fzf'
 hook_add = '''
     nmap <C-p> :History<CR>
+    command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
+      \   fzf#vim#with_preview({'options': '--exact --reverse'}, 'right:50%:wrap'))
 '''
 [[plugins]]
 repo = '42Paris/42header'
@@ -92,6 +101,7 @@ hook_add = '''
 let g:ale_linters = {
 	\ 'python': ['flake8', 'mypy'],
 	\ 'json': ['jsonlint'],
+	\ 'go': ['staticcheck'],
 	\ }
 let g:ale_python_flake8_executable = g:python3_host_prog
 let g:ale_python_flake8_options = '-m flake8'
@@ -107,7 +117,41 @@ let g:ale_fix_on_save = 1
 
 " Fixerとして登録
 let g:ale_fixers = {
-	\ 'python': ['autopep8', 'black', 'isort'],
+	\ 'python': ['autopep8', 'black'],
 	\ 'json': ['jq'],
 	\}
 '''
+
+[[plugins]]
+repo = 'chase/vim-ansible-yaml'
+hook_add = '''
+if has("autocmd")
+filetype plugin on
+filetype indent on
+autocmd FileType yml setlocal sw=2 sts=2 ts=2 et
+autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
+endif
+'''
+
+[[plugins]]
+repo = 'SirVer/ultisnips'
+hook_add = '''
+let g:UltiSnipsUsePythonVersion = 3
+let g:UltiSnipsEditSplit = 'normal'
+let g:UltiSnipsSnippetDirectories = ['']
+let g:UltiSnipsExpandTrigger = '<c-l>'
+let g:UltiSnipsJumpForwardTrigger = '<c-f>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
+command! SNIP UltiSnipsEdit
+'''
+
+
+[[plugins]]
+repo = 'kristijanhusak/defx-git'
+
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+
+[[plugins]]
+repo = 'kristijanhusak/defx-icons'

@@ -14,7 +14,7 @@ if &compatible
 endif
 " Add the dein installation directory into runtimepath
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
-set runtimepath+=~/.cache/dein/repos/github.com/joshdick/onedark.vim
+" set runtimepath+=~/.cache/dein/repos/github.com/joshdick/onedark.vim
 
 if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
@@ -27,7 +27,14 @@ if dein#check_install()
   call dein#install()
 endif
 
-colorscheme onedark
+"colorscheme onedark
 
 filetype plugin indent on
 syntax enable
+set autochdir
+
+set autoindent "自動インデント
+set tabstop=4 "タブ幅
+set shiftwidth=4 "自動インデント幅
+set noexpandtab "タブをスペースに展開しない
+set softtabstop=0 "タブ幅(入力時)
