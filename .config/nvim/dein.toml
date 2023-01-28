@@ -152,16 +152,6 @@ command! SNIP UltiSnipsEdit
 
 
 [[plugins]]
-repo = 'kristijanhusak/defx-git'
-
-[[plugins]]
-repo = 'ryanoasis/vim-devicons'
-
-[[plugins]]
-repo = 'kristijanhusak/defx-icons'
-
-
-[[plugins]]
 repo = 'Shougo/defx.nvim'
 hook_add = '''
 autocmd FileType defx call s:defx_my_settings()
@@ -257,4 +247,14 @@ call defx#custom#column('git', 'indicators', {
 	\ 'Deleted'   : '✖',
 	\ 'Unknown'   : '?',
 	\ })
+
 '''
+
+[[plugins]]
+repo = 'kristijanhusak/defx-git'
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+
+[[plugins]]
+repo = 'kristijanhusak/defx-icons'
