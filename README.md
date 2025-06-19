@@ -10,7 +10,9 @@ $git submodule update
 $cd ~
 $ln -s work/github/dotfiles/.vim .
 $ln -s work/github/dotfiles/.vimrc .
+$ln -s work/github/dotfiles/.fzf.zsh .
 $touch ~/.vimrc.local
 $vim
 :BundleInstall
+
 ```
