@@ -28,6 +28,7 @@
     pkgs.gopls
     pkgs.ripgrep
     pkgs.nodejs
+    pkgs.gnupg
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -81,7 +82,17 @@
   programs.git = {
     enable = true;
     userName = "Kosuke Takami";
-    userEmail = "takamikousuke@gmail.com";
+    userEmail = "kosuke.506@studist.jp";
+    signing = {
+      key = "1CAEB5D793EBADC3A";
+      signByDefault = true;
+    }
+    extraConfig = {
+      tag = {
+        gpgSign = true;
+      };
+    };
+
   };
 
   programs.neovim = {
