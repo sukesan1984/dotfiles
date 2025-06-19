@@ -2,6 +2,9 @@ set number
 set termguicolors
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
+let mapleader = ","
+set ttimeout
+set ttimeoutlen=50
 
 
 let g:python_host_prog = $HOME . '/.pyenv/versions/neovim2/bin/python'
@@ -38,3 +41,23 @@ set tabstop=4 "タブ幅
 set shiftwidth=4 "自動インデント幅
 set noexpandtab "タブをスペースに展開しない
 set softtabstop=0 "タブ幅(入力時)
+if has("autocmd")
+  filetype plugin on
+  filetype indent on
+  autocmd FileType vue setlocal sw=2 sts=2 ts=2 et
+endif
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {
+      'lua',
+      'ruby',
+      'toml',
+      'c_sharp',
+      'vue',
+    }
+  }
+}
+EOF

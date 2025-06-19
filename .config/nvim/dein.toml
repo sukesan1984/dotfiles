@@ -24,6 +24,7 @@ hook_add = '''
 	\ 'python': ['pyls'],
 	\ 'ruby': ['solargraph', 'stdio'],
 	\ 'typescript': ['typescript-language-server'],
+	\ 'vue': ['vls']
 \ }
     let g:LanguageClient_loadSettings = 1
     let g:LanguageClient_hasSnippetSupport = 0
@@ -85,11 +86,21 @@ merged = '0'
 repo = 'junegunn/fzf.vim'
 depends = 'fzf'
 hook_add = '''
+	command! -bang -nargs=* MemoGrepWithFZF
+      \ call fzf#vim#grep(
+      \   'memo grep '.shellescape(<q-args>), 0,
+      \   fzf#vim#with_preview({'options': '--exact --reverse'}, 'right:50%:wrap'))
     nmap <C-p> :History<CR>
     command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
       \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
       \   fzf#vim#with_preview({'options': '--exact --reverse'}, 'right:50%:wrap'))
+	nmap <C-g> :Rg<CR>
+    command! -bang -nargs=* GGrep
+	  \ call fzf#vim#grep(
+	  \   'git grep --line-number -- '.shellescape(<q-args>),
+	  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+	nnoremap <C-l> :MemoGrepWithFZF<SPACE>
 '''
 [[plugins]]
 repo = '42Paris/42header'
@@ -124,7 +135,10 @@ let g:ale_fix_on_save = 1
 let g:ale_fixers = {
 	\ 'python': ['autopep8', 'black'],
 	\ 'json': ['jq'],
+	\ 'sql': ['sqlformat', 'sqlfmt', 'pgformatter'],
 	\}
+
+command! ToggleALEFix let g:ale_fix_on_save = !get(g:, 'ale_fix_on_save', 1) | echo 'ale_fix_on_save: ' . g:ale_fix_on_save
 '''
 
 [[plugins]]
@@ -138,17 +152,17 @@ autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
 endif
 '''
 
-[[plugins]]
-repo = 'SirVer/ultisnips'
-hook_add = '''
-let g:UltiSnipsUsePythonVersion = 3
-let g:UltiSnipsEditSplit = 'normal'
-let g:UltiSnipsSnippetDirectories = ['']
-let g:UltiSnipsExpandTrigger = '<c-l>'
-let g:UltiSnipsJumpForwardTrigger = '<c-f>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
-command! SNIP UltiSnipsEdit
-'''
+#[[plugins]]
+#repo = 'SirVer/ultisnips'
+#hook_add = '''
+#let g:UltiSnipsUsePythonVersion = 3
+#let g:UltiSnipsEditSplit = 'normal'
+#let g:UltiSnipsSnippetDirectories = ['']
+#let g:UltiSnipsExpandTrigger = '<c-l>'
+#let g:UltiSnipsJumpForwardTrigger = '<c-f>'
+#let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
+#command! SNIP UltiSnipsEdit
+#'''
 
 
 [[plugins]]
@@ -158,7 +172,7 @@ autocmd FileType defx call s:defx_my_settings()
 
 nnoremap <silent> <Leader>f :<C-u> Defx <CR>
 
-nmap <C-e> :Defx<CR>
+nmap <C-q> :Defx<CR>
 function! s:defx_my_settings() abort
   " Define mappings
   nnoremap <silent><buffer><expr> <CR>
@@ -258,3 +272,40 @@ repo = 'ryanoasis/vim-devicons'
 
 [[plugins]]
 repo = 'kristijanhusak/defx-icons'
+
+[[plugins]]
+repo = 'posva/vim-vue'
+
+[[plugins]]
+repo = 'github/copilot.vim'
+hook_add = '''
+	imap <silent> <C-n> <Plug>(copilot-next)
+	imap <silent> <C-p> <Plug>(copilot-prev)
+	" マークダウンを有効にする
+	let g:copilot_filetypes = {
+	\ 'markdown': 1,
+	\ }
+'''
+
+[[plugins]]
+repo = 'glidenote/memolist.vim'
+hook_add = '''
+    let g:memolist_path='~/work/github/sukesan1984/memolist'
+	let g:memolist_memo_suffix="md"
+	nnoremap <Leader>mn :MemoNew<CR>
+	nnoremap <Leader>ml :MemoList<CR>
+	nnoremap <Leader>mg :MemoGrep<CR>
+'''
+
+[[plugins]]
+repo = 'UtkarshVerma/molokai.nvim'
+hook_add = '''
+	colorscheme molokai
+'''
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+merged = 0
+on_event = 'BufRead'
+hook_post_update = 'TSUpdate'
+hook_source = 'source ~/.config/nvim/plugins/nvim-treesitter.lua'
