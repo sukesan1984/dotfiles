@@ -84,9 +84,9 @@
     userName = "Kosuke Takami";
     userEmail = "kosuke.506@studist.jp";
     signing = {
-      key = "1CAEB5D793EBADC3A";
+      key = "1CAEB5D793EBADC3";
       signByDefault = true;
-    }
+    };
     extraConfig = {
       tag = {
         gpgSign = true;
