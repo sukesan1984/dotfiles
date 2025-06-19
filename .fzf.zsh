@@ -10,4 +10,4 @@ fi
 
 # Key bindings
 # ------------
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+#source "/User/kosuke.506/.nix-profile/share/fzf/key-bindings.zsh"

@@ -20,3 +20,8 @@ HISTSIZE=100000
 SAVEHIST=100000
 setopt share_history
 eval "$(direnv hook zsh)"
+
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi
