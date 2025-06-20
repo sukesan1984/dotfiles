@@ -29,12 +29,17 @@
     pkgs.silicon
     pkgs.direnv
     pkgs.python3
+    pkgs.pyright
+    pkgs.ruff
     pkgs.clang-tools
     pkgs.gopls
     pkgs.ripgrep
     pkgs.nodejs
     pkgs.gnupg
     pkgs.claude-code
+    pkgs.tree
+    pkgs.jq
+    pkgs.uv
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -117,9 +122,9 @@
         lightline-vim
         tagbar
         {
-           plugin = kanagawa-nvim;
+           plugin = tokyonight-nvim;
            config = ''
-             colorscheme kanagawa
+             colorscheme tokyonight
            '';
         }
 
@@ -129,6 +134,34 @@
 
         ##FZF
         fzf-vim
+
+        ## lsp
+        nvim-lspconfig
+        nvim-cmp
+        cmp-nvim-lsp
+        cmp-buffer
+        cmp-path
+        luasnip
+        cmp_luasnip
+
+        ## Syntax highlighting
+        (nvim-treesitter.withPlugins (p: with p; [
+          python
+          lua
+          vim
+          vimdoc
+          go
+          javascript
+          typescript
+          html
+          css
+          json
+          yaml
+          toml
+          nix
+          bash
+          markdown
+        ]))
     ];
 
 
