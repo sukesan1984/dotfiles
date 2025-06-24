@@ -40,6 +40,9 @@
     pkgs.tree
     pkgs.jq
     pkgs.uv
+    pkgs.go
+    pkgs.sqldef
+    pkgs.imgcat  # iTerm2での画像表示用
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

@@ -6,6 +6,12 @@ opt.termguicolors = true
 -- colorscheme設定
 vim.cmd('colorscheme tokyonight')
 
+-- 行番号の色設定（より見やすくする）
+vim.cmd([[
+  highlight LineNr guifg=#5f87af ctermfg=67
+  highlight CursorLineNr guifg=#ffaf00 ctermfg=214 gui=bold cterm=bold
+]])
+
 -- キーマッピング
 vim.keymap.set('n', '<C-j>', ':bprev<CR>', { silent = true })
 vim.keymap.set('n', '<C-k>', ':bnext<CR>', { silent = true })
@@ -40,6 +46,22 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.softtabstop = 2
     vim.opt_local.tabstop = 2
     vim.opt_local.expandtab = true
+  end
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup,
+  pattern = 'python',
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.expandtab = true
+    vim.opt_local.smartindent = true
+    vim.opt_local.cindent = true
+    vim.opt_local.cinkeys = vim.opt_local.cinkeys - '0#'
+    vim.opt_local.indentkeys = vim.opt_local.indentkeys - '0#'
+    vim.opt_local.cinwords = 'if,elif,else,for,while,try,except,finally,def,class,with'
   end
 })
 
@@ -123,6 +145,29 @@ lspconfig.pyright.setup{
 -- Ruff LSP設定（import整理、linting）
 lspconfig.ruff.setup{
   capabilities = capabilities,
+  settings = {
+    organizeImports = true,
+    fixAll = true,
+  },
+  on_attach = function(client, bufnr)
+    -- Ruffをフォーマッターとして設定
+    client.server_capabilities.documentFormattingProvider = true
+  end,
+}
+
+-- Go LSP設定 (gopls)
+lspconfig.gopls.setup{
+  capabilities = capabilities,
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+        shadow = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+    },
+  },
 }
 
 -- LSP診断設定
@@ -154,4 +199,34 @@ vim.keymap.set('n', '<leader>oi', function()
     apply = true
   })
 end, { desc = 'Organize imports' })
+
+-- Python保存時の自動フォーマット設定
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.py',
+  callback = function()
+    -- 1. Ruffでimportの整理とフォーマット
+    vim.lsp.buf.code_action({
+      context = { only = { "source.organizeImports" } },
+      apply = true
+    })
+    vim.lsp.buf.format({ async = false })
+  end,
+  desc = 'Auto format and organize imports for Python files'
+})
+
+-- vim-go設定
+vim.g['go#fmt_command'] = 'goimports'
+vim.g['go#fmt_autosave'] = 1
+vim.g['go#fmt_fail_silently'] = 0
+vim.g['go#highlight_build_constraints'] = 1
+vim.g['go#highlight_generate_tags'] = 1
+
+-- 保存時にビルドチェックを実行
+vim.api.nvim_create_autocmd('BufWritePost', {
+  pattern = '*.go',
+  callback = function()
+    vim.cmd('GoBuild')
+  end,
+  desc = 'Run GoBuild on save for Go files'
+})
 
