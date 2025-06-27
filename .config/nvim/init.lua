@@ -170,6 +170,18 @@ lspconfig.gopls.setup{
   },
 }
 
+-- Nix LSP設定 (nil)
+lspconfig.nil_ls.setup{
+  capabilities = capabilities,
+  settings = {
+    ['nil'] = {
+      formatting = {
+        command = { "nixpkgs-fmt" },
+      },
+    },
+  },
+}
+
 -- LSP診断設定
 vim.diagnostic.config({
   virtual_text = true,
@@ -204,12 +216,19 @@ end, { desc = 'Organize imports' })
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*.py',
   callback = function()
-    -- 1. Ruffでimportの整理とフォーマット
+    -- 1. Ruffでimportの整理
     vim.lsp.buf.code_action({
       context = { only = { "source.organizeImports" } },
       apply = true
     })
-    vim.lsp.buf.format({ async = false })
+    -- 2. Ruffでフォーマット（より確実に動作させる）
+    vim.lsp.buf.format({
+      async = false,
+      filter = function(client)
+        -- Ruff LSPのみを使用してフォーマット
+        return client.name == "ruff"
+      end
+    })
   end,
   desc = 'Auto format and organize imports for Python files'
 })

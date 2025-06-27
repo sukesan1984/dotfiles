@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   home.username = "kosuke.506";
@@ -43,6 +43,7 @@
     pkgs.go
     pkgs.sqldef
     pkgs.imgcat  # iTerm2での画像表示用
+    pkgs.nil  # Nix LSP
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
