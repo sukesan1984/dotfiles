@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   home.username = "kosuke.506";
@@ -21,29 +21,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    pkgs.git
-    pkgs.tmux
-    pkgs.lsd
-    pkgs.fzf
-    pkgs.fzf-zsh
-    pkgs.silicon
-    pkgs.direnv
-    pkgs.python3
-    pkgs.pyright
-    pkgs.ruff
-    pkgs.clang-tools
-    pkgs.gopls
-    pkgs.ripgrep
-    pkgs.nodejs
-    pkgs.gnupg
-    pkgs.claude-code
-    pkgs.tree
-    pkgs.jq
-    pkgs.uv
-    pkgs.go
-    pkgs.sqldef
-    pkgs.imgcat  # iTerm2での画像表示用
-    pkgs.nil  # Nix LSP
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -59,10 +36,10 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
-    ".tmux.conf".source = ~/dev/src/github.com/sukesan1984/dotfiles/.tmux.conf;
-    ".zshrc".source = ~/dev/src/github.com/sukesan1984/dotfiles/.zshrc;
-    ".fzf.zsh".source = ~/dev/src/github.com/sukesan1984/dotfiles/.fzf.zsh;
-    ".config/nvim".source = ~/dev/src/github.com/sukesan1984/dotfiles/.config/nvim;
+    ".tmux.conf".source = /Users/kosuke.506/dev/src/github.com/sukesan1984/dotfiles/.tmux.conf;
+    ".zshrc".source = /Users/kosuke.506/dev/src/github.com/sukesan1984/dotfiles/.zshrc;
+    ".fzf.zsh".source = /Users/kosuke.506/dev/src/github.com/sukesan1984/dotfiles/.fzf.zsh;
+    ".config/nvim".source = /Users/kosuke.506/dev/src/github.com/sukesan1984/dotfiles/.config/nvim;
   };
 
   # Home Manager can also manage your environment variables through

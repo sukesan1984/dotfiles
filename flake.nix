@@ -196,12 +196,12 @@
                     enable = true;
                     user = username;
 
-                    onActivation = {
-                      autoUpdate = true;
-                      # ここの値でこのファイルに書いてないパッケージを消すこともできる
-                      cleanup = "none";
-                      upgrade = true;
-                    };
+                    #onActivation = {
+                    #  autoUpdate = true;
+                    #  # ここの値でこのファイルに書いてないパッケージを消すこともできる
+                    #  cleanup = "none";
+                    #  upgrade = true;
+                    #};
 
                     masApps = {
                       # "Xcode" = 497799835;
@@ -241,8 +241,8 @@
                       home.homeDirectory = nixpkgs.lib.mkForce "/Users/${username}";
                       home.stateVersion = "25.05";
 
-                      # パッケージの定義（mkMergeで既存のパッケージとマージ）
-                      home.packages = lib.mkMerge [
+                      # パッケージの定義（mkAfterで既存のパッケージに追加）
+                      home.packages = 
                         (with nixpkgsFor.${system}; [
                           _1password-cli
                           awscli2
@@ -252,12 +252,33 @@
                           ghq
                           git
                           nodejs
+                          git
+                          tmux
+                          lsd
+                          fzf
+                          fzf-zsh
+                          silicon
+                          direnv
+                          python3
+                          pyright
+                          ruff
+                          clang-tools
+                          gopls
+                          ripgrep
+                          nodejs
+                          gnupg
+                          claude-code
+                          tree
+                          jq
+                          uv
+                          go
+                          sqldef
+                          imgcat  # iTerm2での画像表示用
                         ])
-                        [
+                        ++ [
                           nil.packages.${system}.nil
                           nixpkgs-ruby.packages.${system}."ruby-3.4"
-                        ]
-                      ];
+                        ];
 
                       # プログラムの設定
                       programs.home-manager.enable = true;
